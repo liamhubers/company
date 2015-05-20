@@ -10,27 +10,24 @@ import java.util.HashMap;
  * Created by Liam on 19/05/2015.
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private String table;
-    static final HashMap<String, String> CREATES = new HashMap<>();
-    static{
-        CREATES.put("company", "CREATE TABLE company (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR NOT NULL, email VARCHAR NOT NULL)");
-        CREATES.put("office", "CREATE TABLE office (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR NOT NULL, spaces INT NOT NULL, company_id INT NOT NULL)");
-    }
-
-    DatabaseHelper(Context context, Integer version, String table){
-        super(context, table, null, version);
-        this.table = table;
+    static final String DATABASE_NAME = "database.db";
+    static final Integer VERSION = 4;
+    DatabaseHelper(Context context){
+        super(context, DATABASE_NAME, null, VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(this.CREATES.get(this.table));
-        db.execSQL("INSERT INTO office (name, spaces, company_id) VALUES ('Kantoor', 5, 1), ('Test', 10, 1), ('Kantoor', 15, 2)");
+        db.execSQL("CREATE TABLE "+ DBContract.Company.TABLE +" ("+ DBContract.Company._ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "+ DBContract.Company.NAME +" VARCHAR NOT NULL, "+ DBContract.Company.EMAIL +" VARCHAR NOT NULL)");
+        db.execSQL("CREATE TABLE "+ DBContract.Office.TABLE +" ("+ DBContract.Office._ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "+ DBContract.Office.NAME +" VARCHAR NOT NULL, spaces INT NOT NULL, "+ DBContract.Office.COMPANY_ID +" INT NOT NULL)");
+        db.execSQL("INSERT INTO "+ DBContract.Company.TABLE +" ("+ DBContract.Company.NAME +", "+ DBContract.Company.EMAIL +") VALUES ('Edit4U', 'info@edit4u.nl'), ('Inverso Media', 'info@inversomedia.nl')");
+        db.execSQL("INSERT INTO "+ DBContract.Office.TABLE +" ("+ DBContract.Office.NAME +", "+ DBContract.Office.SPACES +", "+ DBContract.Office.COMPANY_ID +") VALUES ('Kantoor', 5, 1), ('Test', 10, 1), ('Kantoor', 15, 2)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+this.table);
+        db.execSQL("DROP TABLE IF EXISTS " + DBContract.Company.TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DBContract.Office.TABLE);
         onCreate(db);
     }
 }

@@ -42,7 +42,7 @@ public class OfficeProvider extends ContentProvider {
     public boolean onCreate() {
         Context context = getContext();
 
-        DatabaseHelper DatabaseHelper = new DatabaseHelper(context, 2, this.TABLE);
+        DatabaseHelper DatabaseHelper = new DatabaseHelper(context);
         database = DatabaseHelper.getWritableDatabase();
 
         return (database == null)? false:true;

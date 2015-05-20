@@ -16,11 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <provider android:name="CompanyProvider"
-            android:authorities="com.example.liam.dataProvider.company">
-        </provider>
-        <provider android:name="OfficeProvider"
-            android:authorities="com.example.liam.dataProvider.office">
+        <provider android:name="DataProvider"
+            android:authorities="com.example.liam.providers.dataProvider">
         </provider>
     </application>
 

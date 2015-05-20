@@ -45,18 +45,20 @@ public class MainActivity extends ActionBarActivity {
         );*/
 
 
-        Cursor c = getContentResolver().query(CompanyProvider.CONTENT_URI, null, null, null, null);
+        /*Cursor c = getContentResolver().query(CompanyProvider.CONTENT_URI, null, null, null, null);
         if (c.moveToFirst()) {
             do{
                 Log.i("company", c.getString(c.getColumnIndex("name")));
             }
             while(c.moveToNext());
-        }
+        }*/
 
-        Cursor d = getContentResolver().query(Uri.parse("content://com.example.liam.dataProvider.office/offices/company/1"), null, null, null, null);
+        //Cursor d = getContentResolver().query(Uri.parse("content://com.example.liam.dataProvider.office/offices/company/1"), null, null, null, null);
+        Cursor d = getContentResolver().query(Uri.parse("content://com.example.liam.providers.dataProvider/offices/2"), null, null, null, null);
+
         if (d.moveToFirst()) {
             do{
-                Log.i("office", d.getString(d.getColumnIndex("name")));
+                Log.i("company", d.getString(d.getColumnIndex("name")));
             }
             while(d.moveToNext());
         }

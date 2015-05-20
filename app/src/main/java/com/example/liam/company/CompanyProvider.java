@@ -17,12 +17,11 @@ import java.util.HashMap;
 /**
  * Created by Liam on 19/05/2015.
  */
-public class CompanyProvider extends ContentProvider {
+public class CompanyProvider {
 
-    private SQLiteDatabase database;
-    static final String TABLE = "company";
-    static final String TABLE_ORDER = "name";
-    static final String PLURAL = "companies";
+    /*private SQLiteDatabase database;
+    private String table;
+    private String plural;
 
     static final String PROVIDER_NAME = "com.example.liam.dataProvider.company";
     static final String URL = "content://" + PROVIDER_NAME + "/"+PLURAL;
@@ -131,5 +130,5 @@ public class CompanyProvider extends ContentProvider {
         }
         getContext().getContentResolver().notifyChange(uri, null);
         return count;
-    }
+    }*/
 }
