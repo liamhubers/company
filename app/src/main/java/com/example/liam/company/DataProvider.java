@@ -14,16 +14,14 @@ import android.util.Log;
 
 import java.util.HashMap;
 
-/**
- * Created by Liam Hubers on 20-5-2015.
- */
 public class DataProvider extends ContentProvider {
     private SQLiteDatabase database;
 
     private HashMap<String, String> map;
 
     static final UriMatcher MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
-    static{
+
+    static {
         MATCHER.addURI(DBContract.AUTHORITY, DBContract.Company.TABLE, 1);
         MATCHER.addURI(DBContract.AUTHORITY, DBContract.Office.TABLE, 2);
         MATCHER.addURI(DBContract.AUTHORITY, DBContract.Company.TABLE + "/#", 3);
@@ -38,7 +36,7 @@ public class DataProvider extends ContentProvider {
         DatabaseHelper DatabaseHelper = new DatabaseHelper(context);
         database = DatabaseHelper.getWritableDatabase();
 
-        return (database == null)? false:true;
+        return (database == null) ? false : true;
     }
 
     @Override
@@ -61,15 +59,15 @@ public class DataProvider extends ContentProvider {
                 break;
             case 4:
                 qb.setTables(uri.getPathSegments().get(0));
-                qb.appendWhere( DBContract.Office._ID + " = " + uri.getPathSegments().get(1));
+                qb.appendWhere(DBContract.Office._ID + " = " + uri.getPathSegments().get(1));
                 break;
             case 5:
                 qb.setTables(uri.getPathSegments().get(2));
                 Log.i("test", DBContract.Office.COMPANY_ID);
-                qb.appendWhere(DBContract.Office.COMPANY_ID +" = " + uri.getPathSegments().get(1));
+                qb.appendWhere(DBContract.Office.COMPANY_ID + " = " + uri.getPathSegments().get(1));
                 break;
             default:
-                throw new IllegalArgumentException("Unknown URI " + uri+" "+MATCHER.match(uri));
+                throw new IllegalArgumentException("Unknown URI " + uri + " " + MATCHER.match(uri));
         }
 
         Cursor c = qb.query(database, projection, selection, selectionArgs, null, null, sortOrder);
@@ -80,13 +78,13 @@ public class DataProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        switch (MATCHER.match(uri)){
+        switch (MATCHER.match(uri)) {
             case 1:
             case 2:
-                return "vnd.android.cursor.dir/vnd.example."+uri.getPathSegments().get(0);
+                return "vnd.android.cursor.dir/vnd.example." + uri.getPathSegments().get(0);
             case 3:
             case 4:
-                return "vnd.android.cursor.item/vnd.example."+uri.getPathSegments().get(0);
+                return "vnd.android.cursor.item/vnd.example." + uri.getPathSegments().get(0);
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
@@ -95,8 +93,7 @@ public class DataProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         long id = database.insert(uri.getPathSegments().get(0), "", values);
-        if (id > 0)
-        {
+        if (id > 0) {
             Uri returnUri = ContentUris.withAppendedId(DBContract.CONTENT_URI, id);
             getContext().getContentResolver().notifyChange(returnUri, null);
             return returnUri;
@@ -109,7 +106,7 @@ public class DataProvider extends ContentProvider {
         int count = 0;
 
         String id;
-        switch (MATCHER.match(uri)){
+        switch (MATCHER.match(uri)) {
             case 1:
             case 2:
                 count = database.delete(uri.getPathSegments().get(0), selection, selectionArgs);
@@ -134,7 +131,7 @@ public class DataProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         int count = 0;
 
-        switch (MATCHER.match(uri)){
+        switch (MATCHER.match(uri)) {
             case 1:
             case 2:
                 count = database.update(uri.getPathSegments().get(0), values, selection, selectionArgs);
@@ -146,7 +143,7 @@ public class DataProvider extends ContentProvider {
                 count = database.update(uri.getPathSegments().get(0), values, DBContract.Office._ID + " = " + uri.getPathSegments().get(1) + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
                 break;
             default:
-                throw new IllegalArgumentException("Unknown URI " + uri );
+                throw new IllegalArgumentException("Unknown URI " + uri);
         }
         getContext().getContentResolver().notifyChange(uri, null);
         return count;
